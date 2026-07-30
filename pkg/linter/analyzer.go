@@ -55,6 +55,15 @@ func run(pass *analysis.Pass) (any, error) {
 		}
 
 		if !isLogger {
+			if ident, ok := selExpr.X.(*ast.Ident); ok {
+				name := ident.Name
+				if name == "slog" || name == "zap" || name == "log" {
+					isLogger = true
+				}
+			}
+		}
+
+		if !isLogger {
 			return
 		}
 
